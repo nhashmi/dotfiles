@@ -1,9 +1,24 @@
+[user]
+  name = Nabil Hashmi
+  email = nabil2011@gmail.com
 [init]
   templatedir = ~/.git_template
 [push]
-  default = current
+  default = simple
+[pull]
+  rebase = true
+[rerere]
+  enabled = true
 [color]
-  ui = auto
+  ui = always
+[color "branch"]
+  current = green reverse
+  remote = yellow
+  local = green
+[color "status"]
+  added = green
+  changed = yellow
+  untracked = red
 [alias]
   aa = add --all
   ap = add --patch
@@ -12,9 +27,21 @@
   co = checkout
   pf = push --force-with-lease
   st = status
+  hist = log --color --graph --pretty=format:'%Cred%h%Creset |%Cgreen(%cr)%Creset %s %C(yellow)%d%Creset %C(bold blue)[%an]%Creset' --abbrev-commit
+  type = cat-file -t
+  dump = cat-file -p
+  s = status -s
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
+  review = "!g() { [ -z \"$1\" ] && git push origin HEAD:refs/for/$(git rev-parse --abbrev-ref HEAD) || git push origin HEAD:refs/for/$1; }; g"
+  unstage = reset
+  uncommit = reset --soft HEAD^
+  dc = diff --word-diff --cached --color-words
+  df = diff --word-diff --color-words
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
+  safecrlf = true
+  editor = /usr/bin/vim
 [merge]
   ff = only
 [commit]

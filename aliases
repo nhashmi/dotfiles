@@ -1,5 +1,5 @@
 # Unix
-alias ll="ls -al"
+alias ls="ls -alG"
 alias ln="ln -v"
 alias mkdir="mkdir -p"
 alias e="$EDITOR"
@@ -14,6 +14,46 @@ alias s="rspec"
 
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
+
+# Git aliases
+alias go='git checkout'
+alias gl='git log --all --decorate --graph --pretty=format:"%C(yellow)%h%Creset %C(auto)%d%Creset %Cblue%ar%Creset %Cred%an%Creset %n%w(72,1,2)%s"'
+alias gad='git add .'
+alias gc='git commit -v'
+alias gp='git push'
+alias gpo='git push origin'
+alias gpom='git push origin master'
+alias get='git pull'
+alias gom='git pull origin master'
+alias ga='git add'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gli-'git log -i -E --grep'
+
+# CLI aliases
+alias r='ruby'
+alias py='ptyhon3.6'
+
+# directories
+alias dev="cd ~/dev"
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+# Scratchpad
+alias scratch="vim ~/dev/scratchpad.md"
+
+# Rails
+alias bers="bundle exec rails s"
+
+# Create a new TIL post
+alias til="cd ~/projects/nabil.io && ruby til.rb"
+
+# Create a new reading journal entry
+alias reading="cd ~/projects/nabil.io && ruby read.rb"
+
+# Start projects
+alias mserve="~/dev/start-maw.sh"
 
 # Include custom aliases
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local

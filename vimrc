@@ -160,6 +160,159 @@ set complete+=kspell
 " Always use vertical diffs
 set diffopt+=vertical
 
+" Escape insert mode
+imap jk <esc>:w<cr>
+imap kj <esc>:w<cr>
+imap jj <esc>
+
+" bind \ (backward slash) to grep shortcut
+" command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>
+
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+" bind <leader>d to search Dash for word under cursor
+nmap <silent><leader>d :Dash<cr>
+
+" open scratchpad
+command Scratch vsplit ~/dev/scratchpad.md
+
+" Pre-populate a split command with the current directory
+nmap <leader>v :vnew <C-r>=escape(expand("%:p:h"), ' ') . '/'<cr>
+
+" Move up and down by visible lines if current line is wrapped
+nmap j gj
+nmap k gk
+
+" Command aliases for typoed commands (accidentally holding shift too long)
+command! Q q "Bind :Q to :q
+command! Qall qall
+command! QA qall
+command! E e
+
+" Paset and use current level of indentation (where cursor currently is)
+map <leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>
+
+" Relative number with absolute line number on current line
+set number
+set relativenumber
+
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
+
+" zoom a vim split, <C-w> to rebalance
+nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
+nnoremap <leader>= :wincmd =<cr>
+
+nnoremap <leader>irb :VtrOpenRunner {'orientation': 'h', 'percentage': 50, 'cmd': 'irb'}<cr>
+
+" Make current split large and make others smaller
+set winwidth=84
+set winheight=5
+set winminheight=5
+set winheight=999
+nnoremap <leader>pry :VtrOpenRunner {'orientation': 'h', 'percentage': 50, 'cmd': 'pry'}<cr>
+
+" Go to the end of the line and append
+nnoremap <leader>a $a
+
+" Highlight search results
+set hlsearch
+hi Search cterm=underline,reverse ctermfg=0 ctermbg=11
+
+" Clear highlighted search results
+nmap <leader>h :nohlsearch<cr>
+" Override ignorecase if pattern contains uppercase characters
+set smartcase
+
+" Highlight spelling mistakes in a more readable background color
+hi SpellBad ctermbg=1
+
+" Allows macOS to access clipboard
+set clipboard=unnamed
+
+" Settings for vim-textobj-rubyblock
+if has("autocmd")
+  filetype indent plugin on
+endif
+
+" Explore current file's directory
+nmap <leader>o :Explore<cr>
+" Open current file's directory in new split
+nmap <leader>os :Sexplore<cr>
+" Open current file's directory in new vertical split
+nmap <leader>ov :Vexplore<cr>
+" Open current file's directory in a new tab
+nmap <leader>ot :tabe %:h<cr>
+
+" Change ColorColumn to dark gray
+hi ColorColumn ctermbg=8
+
+" Pretty print JSON (requires 'elzr/vim-json' and 'jq')
+function! s:PrettyJSON()
+  %!jq .
+  set filetype=json
+endfunction
+command! PrettyJSON :call <sid>PrettyJSON()
+
+" Send RSpec spects to tmux panes
+let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
+
+" Enter insert mode after adding newlines above and below
+nmap <leader>i o<cr><esc>kcc
+" Insert newline below/above without entering insert mode
+nmap <leader>j o<esc>
+nmap <leader>k O<esc>
+
+" JS debugging shortcuts
+nmap <leader>cl oconsole.log();<esc>hi
+nmap <leader>b odebugger;<esc>:w<cr>
+
+" Attach to pane (Vim Tmux Runner)
+nmap <leader>x :VtrAttachToPane<cr>
+
+" Send gulp test:dev to attached pane
+nmap <leader>g :VtrSendCommandToRunner gul test:dev<cr>
+
+" Configure EditorConfig to work with fugitive
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+
+" Highlight the current line
+set cursorline
+hi CursorLine cterm=NONE ctermbg=0
+
+" Rename current file (from @garybernhardt)
+" https://github.com/garybernhardt/dotfiles/blob/master/.vimrc
+function! RenameFile()
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_nae
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
+endfunction
+map <leader>n :call RenameFile()<cr>
+
+" ProseMode (courtesy https://statico.github.io/vim3.html#writing-prose-in-vim)
+function! ProseMode()
+  call goyo#execute(0, [])
+  set spell noci nosi noai nolist noshowmode noshowcmd
+  set complete+=s
+  set bg=light
+  if !has('gui_running')
+    let g:solarized_termcolors=256
+  endif
+  colorscheme solarized
+endfunction
+
+command! ProseMode call ProseMode()
+nmap \p :ProseMode<CR>
+
+" ale config
+let g:ale_sign_error = '●'
+let g:ale_sign_warning = '.'
+
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
